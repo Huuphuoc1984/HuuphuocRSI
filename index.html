@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Điều Hướng với iframe và Banner</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Nội dung chính */
+        .main-container {
+            width: 100%;
+            height: calc(100% - 120px); /* Trừ đi chiều cao footer và banner */
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer điều hướng */
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #333;
+            color: #fff;
+            z-index: 1000;
+        }
+
+        .footer-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .footer-item img {
+            width: 28px;
+            height: 28px;
+            filter: invert(1);
+        }
+
+        .footer-item span {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        /* Banner quảng cáo */
+        .banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner quảng cáo -->
+    <div class="banner" id="bannerContainer">
+        <!-- Banner sẽ được thêm qua JavaScript -->
+    </div>
+
+    <!-- Vùng hiển thị iframe -->
+    <div class="main-container">
+        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/"></iframe>
+    </div>
+
+    <!-- Footer Điều Hướng -->
+    <div class="footer">
+        <!-- Trang chủ -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/')">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Trang Chủ">
+            <span>Trang chủ</span>
+        </div>
+        <!-- Sức mạnh ngành -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/')">
+            <img src="https://i.pinimg.com/736x/96/b4/24/96b424bc757e3834b3387081b3248c01.jpg" alt="Sức mạnh ngành">
+            <span>Sức mạnh ngành</span>
+        </div>
+        <!-- Vùng Đáy -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/tinhieu/')">
+            <img src="https://i.pinimg.com/736x/cc/81/11/cc8111849d3e32b3d2db029a28d835e8.jpg" alt="Bắt Đáy">
+            <span>Bắt Đáy</span>
+        </div>
+        <!-- Bắt đáy -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/vungday/')">
+            <img src="https://i.pinimg.com/736x/1b/36/10/1b36108e374f8ab5f040de3edcaaaa4a.jpg" alt="Vùng đáy">
+            <span>Vùng đáy</span>
+        </div>
+        <!-- Menu -->
+        <div class="footer-item" onclick="loadPage('https://example.com/menu')">
+            <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" alt="Menu">
+            <span>Menu</span>
+        </div>
+    </div>
+
+    <!-- JavaScript để load trang vào iframe và hiển thị banner -->
+    <script>
+        const banners = [
+            {
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+1",
+                link: "https://example.com/ad1"
+            },
+            {
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+2",
+                link: "https://example.com/ad2"
+            },
+            {
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+3",
+                link: "https://example.com/ad3"
+            }
+        ];
+
+        let currentBannerIndex = 0;
+
+        // Hàm hiển thị banner
+        function showBanner() {
+            const bannerContainer = document.getElementById('bannerContainer');
+            const banner = banners[currentBannerIndex];
+            bannerContainer.innerHTML = `<a href="${banner.link}" target="_blank">
+                                            <img src="${banner.img}" alt="Banner quảng cáo">
+                                         </a>`;
+            currentBannerIndex = (currentBannerIndex + 1) % banners.length;
+        }
+
+        // Thay đổi banner mỗi 10 giây
+        setInterval(showBanner, 10000);
+        showBanner();
+
+        // Hàm chuyển URL vào iframe
+        function loadPage(url) {
+            const iframe = document.getElementById('contentFrame');
+            iframe.src = url; // Cập nhật URL vào iframe
+        }
+
+        // Khi quay lại tab, tải lại trang chủ
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                loadPage('https://huuphuoc1984.github.io/dandat/');
+            }
+        });
+    </script>
+</body>
+</html>
