@@ -21,13 +21,18 @@
 
         /* Nội dung chính */
         .main-container {
-            width: 100%;
+            width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng */
             height: calc(100% - 120px); /* Trừ đi chiều cao footer và banner */
+            display: flex; /* Sử dụng Flexbox */
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
             position: relative;
+            overflow: hidden; /* Đảm bảo không tràn nội dung */
         }
 
         iframe {
-            width: 100%;
+            width: 100%; /* Đảm bảo iframe nằm gọn */
+            max-width: 100%; /* Giới hạn chiều rộng */
             height: 100%;
             border: none;
         }
@@ -95,19 +100,19 @@
     </div>
 
     <!-- Vùng hiển thị iframe -->
-    <div class="main-container">
+    <div class="main-container" id="mainContainer">
         <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/"></iframe>
     </div>
 
     <!-- Footer Điều Hướng -->
     <div class="footer">
         <!-- Trang chủ -->
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/')">
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/', 100, 80)">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Trang Chủ">
             <span>Trang chủ</span>
         </div>
         <!-- Sức mạnh ngành -->
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/')">
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/', 100, 80)">
             <img src="https://i.pinimg.com/736x/96/b4/24/96b424bc757e3834b3387081b3248c01.jpg" alt="Sức mạnh ngành">
             <span>Sức mạnh ngành</span>
         </div>
@@ -128,7 +133,7 @@
         </div>
     </div>
 
-    <!-- JavaScript để load trang vào iframe và hiển thị banner -->
+    <!-- JavaScript -->
     <script>
         const banners = [
             {
@@ -162,9 +167,19 @@
         showBanner();
 
         // Hàm chuyển URL vào iframe
-        function loadPage(url) {
+        function loadPage(url, width = 100, height = 100) {
             const iframe = document.getElementById('contentFrame');
             iframe.src = url; // Cập nhật URL vào iframe
+
+            // Điều chỉnh kích thước iframe
+            const container = document.getElementById('mainContainer');
+            container.style.width = `${width}%`;
+            container.style.height = `${height}%`;
+
+            // Đảm bảo căn giữa lại iframe
+            container.style.display = 'flex';
+            container.style.justifyContent = 'center';
+            container.style.alignItems = 'center';
         }
 
         // Khi quay lại tab, tải lại trang chủ
