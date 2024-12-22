@@ -21,19 +21,18 @@
 
         /* Nội dung chính */
         .main-container {
-            width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng */
-            height: calc(100% - 120px); /* Trừ đi chiều cao footer và banner */
-            margin-top: 60px; /* Đẩy nội dung xuống dưới banner */
+            position: absolute;
+            top: 60px; /* Đặt vị trí ngay bên dưới banner */
+            width: 100%;
+            height: calc(100% - 120px); /* Trừ chiều cao footer và banner */
             display: flex; /* Sử dụng Flexbox */
             justify-content: center; /* Căn giữa theo chiều ngang */
             align-items: center; /* Căn giữa theo chiều dọc */
-            position: relative;
             overflow: hidden; /* Đảm bảo không tràn nội dung */
         }
 
         iframe {
             width: 100%; /* Đảm bảo iframe nằm gọn */
-            max-width: 100%; /* Giới hạn chiều rộng */
             height: 100%;
             border: none;
         }
@@ -102,7 +101,7 @@
 
     <!-- Vùng hiển thị iframe -->
     <div class="main-container" id="mainContainer">
-        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/"></iframe>
+        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/" title="Content"></iframe>
     </div>
 
     <!-- Footer Điều Hướng -->
