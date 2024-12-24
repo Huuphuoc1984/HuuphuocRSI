@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Điều Hướng với iframe và Banner</title>
+    <title>Iframe Có Thanh Cuộn</title>
     <style>
         * {
             margin: 0;
@@ -11,30 +11,29 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
+
         .main-container {
             width: 100%;
-            height: calc(100% - 120px);
+            height: calc(100% - 120px); /* Trừ chiều cao banner và footer */
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            overflow: hidden;
         }
+
         iframe {
             width: 100%;
-            max-width: 100%;
             height: 100%;
             border: none;
+            overflow: auto; /* Hiển thị thanh cuộn */
         }
+
         .footer {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -42,23 +41,28 @@
             height: 60px;
             background-color: #333;
             color: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             z-index: 1000;
         }
+
         .footer-item {
             text-align: center;
             cursor: pointer;
         }
+
         .footer-item img {
             width: 28px;
             height: 28px;
             filter: invert(1);
         }
+
         .footer-item span {
-            display: block;
-            margin-top: 5px;
             font-size: 12px;
             color: #fff;
         }
+
         .banner {
             position: fixed;
             top: 0;
@@ -69,15 +73,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             z-index: 1000;
+            border-bottom: 1px solid #ccc;
         }
+
         .banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             cursor: pointer;
         }
+
         .visit-counter {
             text-align: center;
             padding: 15px;
@@ -87,73 +93,97 @@
             position: fixed;
             bottom: 60px;
             width: 100%;
-            border-top: 2px solid #ccc;
+            display: none; /* Mặc định ẩn */
         }
     </style>
 </head>
 <body>
-    <div class="banner" id="bannerContainer"></div>
-    <div class="main-container" id="mainContainer">
-        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/"></iframe>
+    <!-- Banner -->
+    <div class="banner" id="bannerContainer">
+        <img src="https://via.placeholder.com/800x60?text=Banner+Quảng+Cáo" alt="Banner Quảng Cáo">
     </div>
+
+    <!-- Nội dung chính -->
+    <div class="main-container">
+        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/" scrolling="yes"></iframe>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/', 100, 80)">
+        <!-- Trang chủ -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/')">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Trang Chủ">
             <span>Trang chủ</span>
         </div>
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/', 100, 110)">
+        <!-- Sức mạnh ngành -->
+        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/')">
             <img src="https://i.pinimg.com/736x/96/b4/24/96b424bc757e3834b3387081b3248c01.jpg" alt="Sức mạnh ngành">
             <span>Sức mạnh ngành</span>
         </div>
+        <!-- Tín hiệu -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/tinhieu/')">
-            <img src="https://i.pinimg.com/736x/cc/81/11/cc8111849d3e32b3d2db029a28d835e8.jpg" alt="Bắt Đáy">
-            <span>Bắt Đáy</span>
+            <img src="https://i.pinimg.com/736x/cc/81/11/cc8111849d3e32b3d2db029a28d835e8.jpg" alt="Tín hiệu">
+            <span>Tín hiệu</span>
         </div>
+        <!-- Bản đồ -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/bando/')">
-            <img src="https://i.pinimg.com/736x/1b/36/10/1b36108e374f8ab5f040de3edcaaaa4a.jpg" alt="Vùng đáy">
-            <span>Vùng đáy</span>
+            <img src="https://i.pinimg.com/736x/1b/36/10/1b36108e374f8ab5f040de3edcaaaa4a.jpg" alt="Bản đồ">
+            <span>Bản đồ</span>
         </div>
-        <div class="footer-item" onclick="loadPage('https://ta.vietstock.vn/')">
+        <!-- Menu -->
+        <div class="footer-item" onclick="menuAction('https://ta.vietstock.vn/')">
             <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" alt="Menu">
             <span>Menu</span>
         </div>
     </div>
+
+    <!-- Bộ đếm -->
     <div class="visit-counter" id="visitCounter">
-        Đang tải tổng số lượt truy cập...
+        Tổng số lượt truy cập: 0
     </div>
+
+    <!-- JavaScript -->
     <script>
-        const banners = [
-            { img: "https://via.placeholder.com/800x60?text=banner+1", link: "https://example.com/ad1" },
-            { img: "https://via.placeholder.com/800x60?text=banner+2", link: "https://example.com/ad2" },
-            { img: "https://via.placeholder.com/800x60?text=banner+3", link: "https://example.com/ad3" }
-        ];
-        let currentBannerIndex = 0;
-
-        function showBanner() {
-            const bannerContainer = document.getElementById('bannerContainer');
-            const banner = banners[currentBannerIndex];
-            bannerContainer.innerHTML = `<a href="${banner.link}" target="_blank"><img src="${banner.img}" alt="Banner quảng cáo"></a>`;
-            currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-        }
-        setInterval(showBanner, 10000);
-        showBanner();
-
-        function loadPage(url, width = 100, height = 100) {
+        // Hàm chuyển URL vào iframe
+        function loadPage(url) {
             const iframe = document.getElementById('contentFrame');
             iframe.src = url;
-            const container = document.getElementById('mainContainer');
-            container.style.width = `${width}%`;
-            container.style.height = `${height}%`;
+
+            // Hiển thị lại banner nếu nó bị ẩn
+            const banner = document.getElementById('bannerContainer');
+            const visitCounter = document.getElementById('visitCounter');
+
+            banner.style.display = 'flex';
+            visitCounter.style.display = 'none';
         }
 
+        // Hàm xử lý riêng cho Menu: Ẩn banner và hiển thị số lượt truy cập
+        function menuAction(url) {
+            const banner = document.getElementById('bannerContainer');
+            const visitCounter = document.getElementById('visitCounter');
+            const iframe = document.getElementById('contentFrame');
+
+            // Tải URL của Menu
+            iframe.src = url;
+
+            // Ẩn banner và hiển thị lượt truy cập
+            banner.style.display = 'none';
+            visitCounter.style.display = 'block';
+        }
+
+        // Cập nhật và hiển thị số lượt truy cập
         function updateVisitCounter() {
-            const baseCount = 1000;
+            const baseCount = 1000; // Bắt đầu từ 1000
             let visitCount = localStorage.getItem('visitCount') || 0;
             visitCount = parseInt(visitCount) + 1;
             localStorage.setItem('visitCount', visitCount);
-            const totalVisits = baseCount + parseInt(visitCount);
+
+            // Hiển thị số lượt truy cập
+            const totalVisits = baseCount + visitCount;
             document.getElementById('visitCounter').innerText = `Tổng số lượt truy cập: ${totalVisits}`;
         }
+
+        // Gọi hàm cập nhật số lượt truy cập khi tải trang
         updateVisitCounter();
     </script>
 </body>
