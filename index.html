@@ -38,7 +38,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 80px; /* Tăng chiều cao footer */
             background-color: #333;
             color: #fff;
             display: flex;
@@ -50,12 +50,17 @@
         .footer-item {
             text-align: center;
             cursor: pointer;
+            display: flex;
+            flex-direction: column; /* Xếp icon và text theo cột */
+            justify-content: center;
+            align-items: center;
         }
 
         .footer-item img {
             width: 28px;
             height: 28px;
             filter: invert(1);
+            margin-bottom: 5px; /* Thêm khoảng cách giữa icon và text */
         }
 
         .footer-item span {
@@ -91,7 +96,7 @@
             background-color: #333;
             color: #fff;
             position: fixed;
-            bottom: 60px;
+            bottom: 80px; /* Đẩy lên trên footer */
             width: 100%;
             display: none; /* Mặc định ẩn */
         }
