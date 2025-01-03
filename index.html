@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iframe Có Thanh Cuộn và Banner Quảng Cáo</title>
+    <title>Menu Danh Mục và Điều Hướng</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
 
         .main-container {
             width: 100%;
-            height: calc(100% - 120px); /* Trừ chiều cao banner và footer */
+            height: calc(100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,44 +30,88 @@
             width: 100%;
             height: 100%;
             border: none;
-            overflow: auto; /* Hiển thị thanh cuộn */
         }
 
         .footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 80px; /* Tăng chiều cao footer */
+            height: 60px;
             background-color: #333;
             color: #fff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
             z-index: 1000;
         }
 
         .footer-item {
             text-align: center;
             cursor: pointer;
-            display: flex;
-            flex-direction: column; /* Xếp icon và text theo cột */
-            justify-content: center;
-            align-items: center;
         }
 
         .footer-item img {
             width: 28px;
             height: 28px;
             filter: invert(1);
-            margin-bottom: 5px; /* Thêm khoảng cách giữa icon và text */
         }
 
         .footer-item span {
+            display: block;
+            margin-top: 5px;
             font-size: 12px;
             color: #fff;
         }
 
+        .menu-list-container {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1100;
+        }
+
+        .menu-list-container .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-list-container .menu-item img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .menu-list-container .menu-item .text .title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .menu-list-container .menu-item .text .subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .menu-list-container .menu-item:hover {
+            background-color: #f9f9f9;
+        }
+
+
+        /* Banner quảng cáo */
         .banner {
             position: fixed;
             top: 0;
@@ -78,8 +122,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
             z-index: 1000;
-            border-bottom: 1px solid #ccc;
         }
 
         .banner img {
@@ -88,122 +132,93 @@
             object-fit: cover;
             cursor: pointer;
         }
-
-        .visit-counter {
-            text-align: center;
-            padding: 15px;
-            font-size: 16px;
-            background-color: #333;
-            color: #fff;
-            position: fixed;
-            bottom: 80px; /* Đẩy lên trên footer */
-            width: 100%;
-            display: none; /* Mặc định ẩn */
-        }
     </style>
 </head>
 <body>
-    <!-- Banner -->
+    <!-- Banner quảng cáo -->
     <div class="banner" id="bannerContainer">
-        <img src="https://via.placeholder.com/800x60?text=Banner+1" alt="Banner 1">
+        <!-- Banner sẽ được thêm qua JavaScript -->
     </div>
-
-    <!-- Nội dung chính -->
+    <!-- Vùng hiển thị iframe -->
     <div class="main-container">
-        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/" scrolling="yes"></iframe>
+        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/dandat/"></iframe>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Điều Hướng -->
     <div class="footer">
-        <!-- Trang chủ -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/')">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Trang Chủ">
             <span>Trang chủ</span>
         </div>
-        <!-- Sức mạnh ngành -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/')">
             <img src="https://i.pinimg.com/736x/96/b4/24/96b424bc757e3834b3387081b3248c01.jpg" alt="Sức mạnh ngành">
             <span>Sức mạnh ngành</span>
         </div>
-        <!-- Tín hiệu -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/tinhieu/')">
-            <img src="https://i.pinimg.com/736x/cc/81/11/cc8111849d3e32b3d2db029a28d835e8.jpg" alt="Tín hiệu">
-            <span>Tín hiệu</span>
+            <img src="https://i.pinimg.com/736x/cc/81/11/cc8111849d3e32b3d2db029a28d835e8.jpg" alt="Bắt Đáy">
+            <span>Bắt Đáy</span>
         </div>
-        <!-- Bản đồ -->
         <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/bando/')">
-            <img src="https://i.pinimg.com/736x/1b/36/10/1b36108e374f8ab5f040de3edcaaaa4a.jpg" alt="Bản đồ">
-            <span>Bản đồ</span>
+            <img src="https://i.pinimg.com/736x/1b/36/10/1b36108e374f8ab5f040de3edcaaaa4a.jpg" alt="Vùng đáy">
+            <span>Vùng đáy</span>
         </div>
-        <!-- Menu -->
-        <div class="footer-item" onclick="menuAction('https://ta.vietstock.vn/')">
+        <div class="footer-item" onclick="toggleMenu()">
             <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" alt="Menu">
             <span>Menu</span>
         </div>
     </div>
 
-    <!-- Bộ đếm -->
-    <div class="visit-counter" id="visitCounter">
-        Tổng số lượt truy cập: 0
+    <!-- Danh Mục Menu -->
+    <div class="menu-list-container" id="menuList">
+        <div class="menu-item" onclick="loadPage('https://example.com/the-gioi')">
+            <img src="https://via.placeholder.com/40" alt="Thế giới">
+            <div class="text">
+                <div class="title">Thế giới</div>
+                <div class="subtitle">Chỉ số thế giới, cặp tiền, hàng hóa</div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="loadPage('https://example.com/chung-khoan')">
+            <img src="https://via.placeholder.com/40" alt="Chứng khoán">
+            <div class="text">
+                <div class="title">Chứng khoán</div>
+                <div class="subtitle">Dữ liệu tổng quan các mã chứng khoán</div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="loadPage('https://example.com/crypto')">
+            <img src="https://via.placeholder.com/40" alt="Crypto">
+            <div class="text">
+                <div class="title">Crypto</div>
+                <div class="subtitle">Biến động thị trường tiền số</div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="loadPage('https://huuphuoc1984.github.io/images/')">
+            <img src="https://via.placeholder.com/40" alt="Vĩ mô">
+            <div class="text">
+                <div class="title">Vĩ mô</div>
+                <div class="subtitle">Cập nhật dữ liệu kinh tế vĩ mô</div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="loadPage('https://ta.vietstock.vn/')">
+            <img src="https://via.placeholder.com/40" alt="Biểu đồ kỹ thuật">
+            <div class="text">
+                <div class="title">Biểu đồ kỹ thuật</div>
+                </div>
+        </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
-        // Hàm chuyển URL vào iframe
-        function loadPage(url) {
-            const iframe = document.getElementById('contentFrame');
-            iframe.src = url;
-
-            // Hiển thị lại banner nếu nó bị ẩn
-            const banner = document.getElementById('bannerContainer');
-            const visitCounter = document.getElementById('visitCounter');
-
-            banner.style.display = 'flex';
-            visitCounter.style.display = 'none';
-        }
-
-        // Hàm xử lý riêng cho Menu: Ẩn banner và hiển thị số lượt truy cập
-        function menuAction(url) {
-            const banner = document.getElementById('bannerContainer');
-            const visitCounter = document.getElementById('visitCounter');
-            const iframe = document.getElementById('contentFrame');
-
-            // Tải URL của Menu
-            iframe.src = url;
-
-            // Ẩn banner và hiển thị lượt truy cập
-            banner.style.display = 'none';
-            visitCounter.style.display = 'block';
-        }
-
-        // Cập nhật và hiển thị số lượt truy cập
-        function updateVisitCounter() {
-            const baseCount = 1000; // Bắt đầu từ 1000
-            let visitCount = localStorage.getItem('visitCount') || 0;
-            visitCount = parseInt(visitCount) + 1;
-            localStorage.setItem('visitCount', visitCount);
-
-            // Hiển thị số lượt truy cập
-            const totalVisits = baseCount + visitCount;
-            document.getElementById('visitCounter').innerText = `Tổng số lượt truy cập: ${totalVisits}`;
-        }
-
-        // Gọi hàm cập nhật số lượt truy cập khi tải trang
-        updateVisitCounter();
-
-        // Mảng chứa banner
-        const banners = [
+ const banners = [
             {
-                img: "https://via.placeholder.com/800x60?text=Banner+1",
-                link: "https://example.com/banner1"
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+1",
+                link: "https://example.com/ad1"
             },
             {
-                img: "https://via.placeholder.com/800x60?text=Banner+2",
-                link: "https://example.com/banner2"
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+2",
+                link: "https://example.com/ad2"
             },
             {
-                img: "https://via.placeholder.com/800x60?text=Banner+3",
-                link: "https://example.com/banner3"
+                img: "https://via.placeholder.com/800x60?text=Quang+cao+3",
+                link: "https://example.com/ad3"
             }
         ];
 
@@ -213,19 +228,25 @@
         function showBanner() {
             const bannerContainer = document.getElementById('bannerContainer');
             const banner = banners[currentBannerIndex];
-            bannerContainer.innerHTML = `
-                <a href="${banner.link}" target="_blank">
-                    <img src="${banner.img}" alt="Banner ${currentBannerIndex + 1}">
-                </a>
-            `;
+            bannerContainer.innerHTML = `<a href="${banner.link}" target="_blank">
+                                            <img src="${banner.img}" alt="Banner quảng cáo">
+                                         </a>`;
             currentBannerIndex = (currentBannerIndex + 1) % banners.length;
         }
 
-        // Tự động thay đổi banner mỗi 10 giây
+        // Thay đổi banner mỗi 10 giây
         setInterval(showBanner, 10000);
-
-        // Hiển thị banner đầu tiên khi tải trang
         showBanner();
+      
+  function loadPage(url) {
+            document.getElementById('contentFrame').src = url;
+            document.getElementById('menuList').style.display = 'none';
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('menuList');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>
