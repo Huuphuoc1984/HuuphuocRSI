@@ -1,262 +1,586 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9XBZK8N8B5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-9XBZK8N8B5');
-</script>  
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chuyên gia tư vấn cấp cao</title>
-    <link rel="icon" href="assets/icon/Icon.png" type="image/x-icon">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <title>BẢNG PHÂN TÍCH XU HƯỚNG & SỨC MẠNH NGÀNH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --bg-color: #f5f8fa;
+      --card-bg: #ffffff;
+      --text-color-dark: #1e293b;
+      --text-color-light: #64748b;
+      --primary-blue: #2563eb;
+      --primary-blue-dark: #1d4ed8;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-yellow: #f59e0b;
+      --border-color: #e2e8f0;
+      --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.12);
+      --market-up: #10b981;
+      --market-down: #ef4444;
+    }
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color-dark);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(239, 68, 68, 0.03) 0%, transparent 20%);
+    }
 
-        .main-container {
-            width: 100%;
-            height: calc(100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Loading animation */
+    .loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+      z-index: 1000;
+      animation: loading 1.5s ease-in-out infinite;
+      transform-origin: left;
+    }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+    @keyframes loading {
+      0% { transform: scaleX(0); left: 0; }
+      50% { transform: scaleX(1); left: 0; }
+      100% { transform: scaleX(0); left: 100%; }
+    }
 
-        .footer {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #333;
-            color: #fff;
-            z-index: 1000;
-        }
+    /* Market ticker animation */
+    .market-ticker {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(30, 41, 59, 0.95);
+      color: white;
+      padding: 8px 0;
+      overflow: hidden;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      font-size: 14px;
+    }
 
-        .footer-item {
-            text-align: center;
-            cursor: pointer;
-        }
+    .ticker-content {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
 
-        .footer-item img {
-            width: 28px;
-            height: 28px;
-            filter: invert(1);
-        }
+    .ticker-message {
+      white-space: nowrap;
+      padding-right: 30px;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: all 0.5s ease;
+    }
 
-        .footer-item span {
-            display: block;
-            margin-top: 5px;
-            font-size: 12px;
-            color: #fff;
-        }
+    .ticker-message.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
 
-        .menu-list-container {
-            display: none;
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            z-index: 1100;
-        }
+    .stock-up {
+      color: var(--market-up);
+      font-weight: 600;
+    }
 
-        .menu-list-container .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .stock-down {
+      color: var(--market-down);
+      font-weight: 600;
+    }
 
-        .menu-list-container .menu-item img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
+    .tab-container {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow-light);
+      padding: 30px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
 
-        .menu-list-container .menu-item .text .title {
-            font-size: 14px;
-            font-weight: bold;
-        }
+    .tab-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-blue), var(--accent-green), var(--accent-yellow), var(--accent-red));
+    }
 
-        .menu-list-container .menu-item .text .subtitle {
-            font-size: 12px;
-            color: #666;
-        }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
 
-        .menu-list-container .menu-item:hover {
-            background-color: #f9f9f9;
-        }
+    .tab-btn {
+      border: none;
+      background: #f1f5f9;
+      color: var(--text-color-dark);
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
 
+    .tab-btn:hover {
+      background: #e2e8f0;
+      color: var(--primary-blue);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
 
-        /* Banner quảng cáo */
-        .banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            z-index: 1000;
-        }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+      transform: translateY(-2px);
+      border-color: var(--primary-blue);
+    }
 
-        .banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-    </style>
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 3px;
+      background: var(--primary-blue);
+      border-radius: 3px;
+    }
+
+    .tab-content {
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.6s forwards;
+      padding: 20px 0;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-blue-dark);
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+      margin-top: 0;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+
+    .tab-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+      border-radius: 3px;
+    }
+
+    .tab-img {
+      width: 100%;
+      max-width: 850px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      transition: transform 0.4s cubic-bezier(.19,1,.22,1), box-shadow 0.4s ease-in-out;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-img:hover {
+      transform: scale(1.02) translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Mini buttons for Top 5 detail */
+    .mini-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 25px;
+      margin-top: 15px;
+    }
+
+    .mini-btn {
+      border: 1px solid var(--border-color);
+      background: #f8fafc;
+      color: var(--text-color-dark);
+      padding: 8px 18px;
+      font-size: 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      outline: none;
+    }
+
+    .mini-btn:hover {
+      background: #f1f5f9;
+      border-color: var(--primary-blue);
+      color: var(--primary-blue);
+      transform: translateY(-1px);
+    }
+
+    .mini-btn.active {
+      background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      border-color: var(--primary-blue);
+      transform: translateY(-1px);
+    }
+
+    .mini-img-content {
+      display: none;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    .mini-img-content.active {
+      display: block;
+    }
+
+    /* Stock chart-like elements */
+    .chart-line {
+      position: absolute;
+      height: 2px;
+      background: var(--border-color);
+      left: 0;
+      right: 0;
+    }
+
+    .chart-line:nth-child(1) { top: 25%; }
+    .chart-line:nth-child(2) { top: 50%; }
+    .chart-line:nth-child(3) { top: 75%; }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--text-color-light);
+      font-size: 14px;
+      padding-bottom: 20px;
+      width: 100%;
+    }
+
+    /* Responsive design */
+    @media (max-width: 900px) {
+      .tab-container {
+        padding: 25px;
+        border-radius: 14px;
+      }
+      .tab-title {
+        font-size: 24px;
+        margin-bottom: 22px;
+      }
+      .tab-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .mini-btn {
+        font-size: 13px;
+        padding: 7px 14px;
+      }
+      .tabs {
+        gap: 10px;
+        margin-bottom: 25px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .tab-container {
+        padding: 20px;
+        border-radius: 12px;
+      }
+      .tab-title {
+        font-size: 22px;
+      }
+      .tab-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+      .mini-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Banner quảng cáo -->
-    <div class="banner" id="bannerContainer">
-        <!-- Banner sẽ được thêm qua JavaScript -->
+  <div class="loading-bar"></div>
+  
+  <div class="market-ticker">
+    <div class="ticker-content" id="quote-ticker">
+      <!-- Nội dung sẽ được thêm bằng JavaScript -->
     </div>
-    <!-- Vùng hiển thị iframe -->
-    <div class="main-container">
-        <iframe id="contentFrame" src="https://huuphuoc1984.github.io/appchungkhoan/"></iframe>
+  </div>
+
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab1">
+        <i class="fas fa-chart-line"></i> Ngành Chính
+      </button>
+      <button class="tab-btn" data-tab="tab2">
+        <i class="fas fa-chart-pie"></i> Ngành Phụ
+      </button>
+      <button class="tab-btn" data-tab="tab3">
+        <i class="fas fa-trophy"></i> Top 5
+      </button>
+      <button class="tab-btn" data-tab="tab4">
+        <i class="fas fa-bolt"></i> Bold & Fear
+      </button>
+      <button class="tab-btn" data-tab="tab5">
+        <i class="fas fa-shield-alt"></i> Aegis & Phoenix
+      </button>
     </div>
-
-    <!-- Footer Điều Hướng -->
-    <div class="footer">
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/dandat/')">
-            <img src="assets/images/Top5.png" alt="Top Ngành">
-            <span>Top Ngành</span>
-        </div>
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/appchungkhoan/')">
-            <img src="assets/images/sucmanhnganh.png" alt="Sức mạnh ngành">
-            <span>Sức mạnh ngành</span>
-        </div>
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/tinhieu/')">
-            <img src="assets/images/tinhieu.jpg" alt="Vệ Cơ">
-            <span>PhoenixAndAegis</span>
-        </div>
-        <div class="footer-item" onclick="loadPage('https://huuphuoc1984.github.io/vungday/')">
-            <img src="assets/images/vungday.jpg" alt="BoldAndFear">
-            <span>BoldAndFear</span>
-        </div>
-        <div class="footer-item" onclick="toggleMenu()">
-            <img src="assets/images/menu.png" alt="Menu">
-            <span>Menu</span>
-        </div>
+    
+    <div id="tab1" class="tab-content active">
+      <div class="tab-title">1. Tổng quan các ngành chính</div>
+      <img src="Tru.png" class="tab-img" alt="Tổng quan ngành">
     </div>
-
-    <!-- Danh Mục Menu -->
-    <div class="menu-list-container" id="menuList">
-        <div class="menu-item" onclick="loadPage('https://www.facebook.com/huuphuocrsi')">
-            <img src="assets/images/fb.jpg" alt="Trang FB">
-            <div class="text">
-                <div class="title">Trang FB</div>
-                <div class="subtitle">Thông tin trang facebook các nhân</div>
-            </div>
-        </div>
-        <div class="menu-item" onclick="loadPage('https://vietstock.vn/chung-khoan.htm')">
-            <img src="https://via.placeholder.com/40" alt="Tin tức">
-            <div class="text">
-                <div class="title">Tin tức</div>
-                <div class="subtitle">Cập nhật tin tức chứng khoán</div>
-            </div>
-        </div>
-        <div class="menu-item" onclick="loadPage('https://ta.vietstock.vn/')">
-            <img src="https://via.placeholder.com/40" alt="Crypto">
-            <div class="text">
-                <div class="title">Bảng giá trực quan</div>
-                <div class="subtitle">Biến động thị trường tiền số</div>
-            </div>
-        </div>
-        <div class="menu-item" onclick="loadPage('https://huuphuoc1984.github.io/tonghop/')">
-            <img src="assets/icon/icon1.png" alt="Vĩ mô">
-            <div class="text">
-                <div class="title">Banggia</div>
-                <div class="subtitle">Tất cả các cổ phiếu</div>
-            </div>
-        </div>
-        <div class="menu-item" onclick="loadPage('https://ta.vietstock.vn/')">
-            <img src="https://via.placeholder.com/40" alt="Biểu đồ kỹ thuật">
-            <div class="text">
-                <div class="title">Biểu đồ kỹ thuật</div>
-                </div>
-        </div>
+    
+    <div id="tab2" class="tab-content">
+      <div class="tab-title">2. Phân tích nhóm ngành phụ</div>
+      <img src="Phu.png" class="tab-img" alt="Ngành phụ">
     </div>
+    
+    <div id="tab3" class="tab-content">
+      <div class="tab-title">3. Top 5 cổ phiếu nổi bật theo ngành</div>
+      <div class="mini-tabs">
+        <button class="mini-btn active" data-mini="mini1">Bank</button>
+        <button class="mini-btn" data-mini="mini2">Banle</button>
+        <button class="mini-btn" data-mini="mini3">Bds</button>
+        <button class="mini-btn" data-mini="mini4">Chung</button>
+        <button class="mini-btn" data-mini="mini5">Dtc</button>
+        <button class="mini-btn" data-mini="mini6">HC-Phanbon-NN</button>
+        <button class="mini-btn" data-mini="mini7">KCN</button>
+        <button class="mini-btn" data-mini="mini8">Phongthu</button>
+        <button class="mini-btn" data-mini="mini9">Thep</button>
+        <button class="mini-btn" data-mini="mini10">Xuatkhau</button>
+      </div>
+      <div class="mini-img-content active" id="mini1">
+        <img src="Bank.png" class="tab-img" alt="Bank">
+      </div>
+      <div class="mini-img-content" id="mini2">
+        <img src="Banle.png" class="tab-img" alt="Banle">
+      </div>
+      <div class="mini-img-content" id="mini3">
+        <img src="Bds.png" class="tab-img" alt="Bds">
+      </div>
+      <div class="mini-img-content" id="mini4">
+        <img src="Chung.png" class="tab-img" alt="Chung">
+      </div>
+      <div class="mini-img-content" id="mini5">
+        <img src="Dtc.png" class="tab-img" alt="Dtc">
+      </div>
+      <div class="mini-img-content" id="mini6">
+        <img src="HC-Phanbon-NN.png" class="tab-img" alt="HC-Phanbon-NN">
+      </div>
+      <div class="mini-img-content" id="mini7">
+        <img src="KCN.png" class="tab-img" alt="KCN">
+      </div>
+      <div class="mini-img-content" id="mini8">
+        <img src="Phongthu.png" class="tab-img" alt="Phongthu">
+      </div>
+      <div class="mini-img-content" id="mini9">
+        <img src="Thep.png" class="tab-img" alt="Thep">
+      </div>
+      <div class="mini-img-content" id="mini10">
+        <img src="Xuatkhau.png" class="tab-img" alt="Xuatkhau">
+      </div>
+    </div>
+    
+    <div id="tab4" class="tab-content">
+      <div class="tab-title">4. Bold And Fear</div>
+      <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear">
+    </div>
+    
+    <div id="tab5" class="tab-content">
+      <div class="tab-title">5. Aegis And Phoenix</div>
+      <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix">
+    </div>
+  </div>
 
-    <script>
- const banners = [
-            {
-                img: "https://via.placeholder.com/800x60?text=Quang+cao+1",
-                link: "https://example.com/ad1"
-            },
-            {
-                img: "https://via.placeholder.com/800x60?text=Quang+cao+2",
-                link: "https://example.com/ad2"
-            },
-            {
-                img: "https://via.placeholder.com/800x60?text=Quang+cao+3",
-                link: "https://example.com/ad3"
-            }
-        ];
+  <footer>
+    &copy; 2025 HuuPhuocRSI. All rights reserved. | 
+    <span id="current-time"></span> | 
+    <span id="market-status" class="stock-up">Thị trường đang mở cửa</span>
+  </footer>
 
-        let currentBannerIndex = 0;
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    // Danh sách các trích dẫn
+    const quotes = [
+      "Warren Buffett: \"Hãy sợ hãi khi người khác tham lam và hãy tham lam khi người khác sợ hãi.\"",
+      "Warren Buffett: \"Không bao giờ phụ thuộc vào một nguồn thu nhập duy nhất. Hãy đầu tư để tạo ra nguồn thứ hai.\"",
+      "Warren Buffett: \"Rủi ro đến từ việc bạn không biết mình đang làm gì.\"",
+      "Warren Buffett: \"Thị trường chứng khoán là nơi chuyển tiền từ người thiếu kiên nhẫn sang người kiên nhẫn.\"",
+      "Jesse Livermore: \"Thị trường không bao giờ sai - chỉ có ý kiến cá nhân là sai.\"",
+      "Jesse Livermore: \"Không phải suy nghĩ của tôi giúp tôi kiếm được nhiều tiền, mà chính là việc kiên nhẫn chờ đợi.\"",
+      "George Soros: \"Điều quan trọng không phải là bạn đúng hay sai, mà là khi bạn đúng, bạn kiếm được bao nhiêu và khi bạn sai, bạn mất bao nhiêu.\"",
+      "Peter Lynch: \"Biến động thị trường là người bạn tốt nhất của nhà đầu tư dài hạn.\"",
+      "Benjamin Graham: \"Trong ngắn hạn, thị trường là máy bỏ phiếu; trong dài hạn, thị trường là cái cân.\"",
+      "Charlie Munger: \"Kiên nhẫn và kỷ luật là hai yếu tố quan trọng nhất của thành công.\""
+    ];
 
-        // Hàm hiển thị banner
-        function showBanner() {
-            const bannerContainer = document.getElementById('bannerContainer');
-            const banner = banners[currentBannerIndex];
-            bannerContainer.innerHTML = `<a href="${banner.link}" target="_blank">
-                                            <img src="${banner.img}" alt="Phân tích kỹ thuật">
-                                         </a>`;
-            currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-        }
+    // Âm thanh đánh máy
+    const typewriterSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-fast-typing-1540.mp3');
+    typewriterSound.volume = 0.3;
 
-        // Thay đổi banner mỗi 10 giây
-        setInterval(showBanner, 10000);
-        showBanner();
+    // Hiệu ứng chữ bay vào
+    function displayQuotes() {
+      const ticker = document.getElementById('quote-ticker');
+      let currentIndex = 0;
+
+      function showNextQuote() {
+        // Tạo phần tử mới
+        const quoteElement = document.createElement('div');
+        quoteElement.className = 'ticker-message';
+        quoteElement.textContent = quotes[currentIndex];
+        ticker.appendChild(quoteElement);
+
+        // Kích hoạt hiệu ứng bay vào
+        setTimeout(() => {
+          quoteElement.classList.add('active');
+          
+          // Phát âm thanh đánh máy
+          typewriterSound.currentTime = 0;
+          typewriterSound.play();
+        }, 100);
+
+        // Sau khi hiển thị, chuyển sang quote tiếp theo
+        setTimeout(() => {
+          quoteElement.classList.remove('active');
+          
+          // Xóa phần tử sau khi hoàn thành hiệu ứng
+          setTimeout(() => {
+            ticker.removeChild(quoteElement);
+            currentIndex = (currentIndex + 1) % quotes.length;
+            showNextQuote();
+          }, 500);
+        }, 8000); // Thời gian hiển thị mỗi quote (8 giây)
+      }
+
+      // Bắt đầu chu trình
+      showNextQuote();
+    }
+
+    // Bắt đầu hiệu ứng khi trang tải xong
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loading-bar').style.display = 'none';
+        displayQuotes();
+      }, 500);
+    });
+
+    // Main tab switching logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(tc => tc.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        
+        // Add animation to the active tab
+        const activeTab = document.getElementById(btn.dataset.tab);
+        activeTab.style.animation = 'fadeIn 0.6s forwards';
+      });
+    });
+
+    // Mini-tab logic for Top 5 tab only
+    const miniBtns = document.querySelectorAll('.mini-btn');
+    const miniImgs = document.querySelectorAll('.mini-img-content');
+    
+    miniBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        miniBtns.forEach(b => b.classList.remove('active'));
+        miniImgs.forEach(m => m.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.mini).classList.add('active');
+        
+        // Add animation to the active mini content
+        const activeMini = document.getElementById(btn.dataset.mini);
+        activeMini.style.animation = 'fadeIn 0.5s forwards';
+      });
+    });
+
+    // Update current time
+    function updateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      document.getElementById('current-time').textContent = now.toLocaleDateString('vi-VN', options);
+    }
+    
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Simulate market status changes
+    function updateMarketStatus() {
+      const statusElement = document.getElementById('market-status');
+      const isOpen = Math.random() > 0.5;
       
-  function loadPage(url) {
-            document.getElementById('contentFrame').src = url;
-            document.getElementById('menuList').style.display = 'none';
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('menuList');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-    </script>
+      if (isOpen) {
+        statusElement.textContent = 'Thị trường đang mở cửa';
+        statusElement.className = 'stock-up';
+      } else {
+        statusElement.textContent = 'Thị trường đã đóng cửa';
+        statusElement.className = 'stock-down';
+      }
+    }
+    
+    setInterval(updateMarketStatus, 5000);
+    updateMarketStatus();
+  </script>
 </body>
 </html>
