@@ -253,7 +253,7 @@
       background-image: linear-gradient(to right, #f5f5f5 0%, #e0e0e0 20%, #f5f5f5 40%, #f5f5f5 100%);
       background-size: 200% 100%;
       position: relative;
-      min-height: 300px;
+      aspect-ratio: 16/9;
     }
 
     .chart-container.loaded {
@@ -262,7 +262,7 @@
 
     .chart-iframe {
       width: 100%;
-      height: 371px;
+      height: 100%;
       border: none;
       display: block;
     }
@@ -324,19 +324,6 @@
       display: block;
     }
 
-    /* Stock chart-like elements */
-    .chart-line {
-      position: absolute;
-      height: 2px;
-      background: var(--border-color);
-      left: 0;
-      right: 0;
-    }
-
-    .chart-line:nth-child(1) { top: 25%; }
-    .chart-line:nth-child(2) { top: 50%; }
-    .chart-line:nth-child(3) { top: 75%; }
-
     footer {
       text-align: center;
       margin-top: 40px;
@@ -368,9 +355,6 @@
         gap: 10px;
         margin-bottom: 25px;
       }
-      .chart-iframe {
-        height: 300px;
-      }
     }
 
     @media (max-width: 600px) {
@@ -390,11 +374,8 @@
         padding: 6px 10px;
         font-size: 11px;
       }
-      .chart-iframe {
-        height: 250px;
-      }
       .chart-container {
-        min-height: 250px;
+        aspect-ratio: 1/1;
       }
     }
 
@@ -711,17 +692,10 @@
         }
       });
 
-      // Điều chỉnh iframe
+      // Điều chỉnh iframe - chỉ cần set width
       const iframes = document.querySelectorAll('.chart-iframe');
       iframes.forEach(iframe => {
         iframe.style.width = '100%';
-        if (window.innerWidth < 600) {
-          iframe.style.height = '250px';
-        } else if (window.innerWidth < 900) {
-          iframe.style.height = '300px';
-        } else {
-          iframe.style.height = '371px';
-        }
       });
     }
 
