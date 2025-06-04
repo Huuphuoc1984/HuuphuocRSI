@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>BẢNG PHÂN TÍCH XU HƯỚNG & SỨC MẠNH NGÀNH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <style>
@@ -219,18 +219,61 @@
       border-radius: 3px;
     }
 
+    /* Cải tiến hiển thị ảnh và iframe */
     .tab-img {
       width: 100%;
       max-width: 850px;
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
       transition: transform 0.4s cubic-bezier(.19,1,.22,1), box-shadow 0.4s ease-in-out;
       border: 1px solid var(--border-color);
+      display: block;
+      margin: 0 auto;
+      background-color: #f5f5f5;
+      background-image: linear-gradient(to right, #f5f5f5 0%, #e0e0e0 20%, #f5f5f5 40%, #f5f5f5 100%);
+      background-size: 200% 100%;
     }
 
-    .tab-img:hover {
-      transform: scale(1.02) translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    .tab-img.loaded {
+      background: none;
+      animation: none;
+    }
+
+    .chart-container {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color);
+      transition: all 0.4s cubic-bezier(.19,1,.22,1);
+      background-color: #f5f5f5;
+      background-image: linear-gradient(to right, #f5f5f5 0%, #e0e0e0 20%, #f5f5f5 40%, #f5f5f5 100%);
+      background-size: 200% 100%;
+      position: relative;
+      min-height: 300px;
+    }
+
+    .chart-container.loaded {
+      background: none;
+    }
+
+    .chart-iframe {
+      width: 100%;
+      height: 371px;
+      border: none;
+      display: block;
+    }
+
+    /* Tắt hiệu ứng hover trên mobile */
+    @media (hover: none) {
+      .tab-img:hover,
+      .chart-container:hover {
+        transform: none;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      }
     }
 
     /* Mini buttons for Top 5 detail */
@@ -325,24 +368,39 @@
         gap: 10px;
         margin-bottom: 25px;
       }
+      .chart-iframe {
+        height: 300px;
+      }
     }
 
     @media (max-width: 600px) {
       .tab-container {
-        padding: 20px;
+        padding: 15px;
         border-radius: 12px;
       }
       .tab-title {
-        font-size: 22px;
+        font-size: 20px;
+        margin-bottom: 15px;
       }
       .tab-btn {
         padding: 8px 16px;
         font-size: 13px;
       }
       .mini-btn {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 6px 10px;
+        font-size: 11px;
       }
+      .chart-iframe {
+        height: 250px;
+      }
+      .chart-container {
+        min-height: 250px;
+      }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 </head>
@@ -376,12 +434,30 @@
     
     <div id="tab1" class="tab-content active">
       <div class="tab-title">1. Tổng quan các ngành chính</div>
-      <img src="Tru.png" class="tab-img" alt="Tổng quan ngành">
+      <div class="chart-container" id="chart1">
+        <iframe 
+          class="chart-iframe" 
+          seamless 
+          frameborder="0" 
+          scrolling="no" 
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1465731314&amp;format=interactive"
+          loading="lazy">
+        </iframe>
+      </div>
     </div>
     
     <div id="tab2" class="tab-content">
       <div class="tab-title">2. Phân tích nhóm ngành phụ</div>
-      <img src="Phu.png" class="tab-img" alt="Ngành phụ">
+      <div class="chart-container" id="chart2">
+        <iframe 
+          class="chart-iframe" 
+          seamless 
+          frameborder="0" 
+          scrolling="no" 
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1848622683&amp;format=interactive"
+          loading="lazy">
+        </iframe>
+      </div>
     </div>
     
     <div id="tab3" class="tab-content">
@@ -399,45 +475,135 @@
         <button class="mini-btn" data-mini="mini10">Xuatkhau</button>
       </div>
       <div class="mini-img-content active" id="mini1">
-        <img src="Bank.png" class="tab-img" alt="Bank">
+        <div class="chart-container" id="chart-mini1">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=962310192&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
       </div>
       <div class="mini-img-content" id="mini2">
-        <img src="Banle.png" class="tab-img" alt="Banle">
-      </div>
+        <div class="chart-container" id="chart-mini2">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1042221064&format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>      
       <div class="mini-img-content" id="mini3">
-        <img src="Bds.png" class="tab-img" alt="Bds">
-      </div>
+        <div class="chart-container" id="chart-mini3">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1782477941&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>      
       <div class="mini-img-content" id="mini4">
-        <img src="Chung.png" class="tab-img" alt="Chung">
+        <div class="chart-container" id="chart-mini4">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=497562514&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
       </div>
       <div class="mini-img-content" id="mini5">
-        <img src="Dtc.png" class="tab-img" alt="Dtc">
+        <div class="chart-container" id="chart-mini5">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1288762102&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
       </div>
       <div class="mini-img-content" id="mini6">
-        <img src="HC-Phanbon-NN.png" class="tab-img" alt="HC-Phanbon-NN">
-      </div>
+        <div class="chart-container" id="chart-mini6">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1407771254&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>  
       <div class="mini-img-content" id="mini7">
-        <img src="KCN.png" class="tab-img" alt="KCN">
-      </div>
+        <div class="chart-container" id="chart-mini7">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1406751528&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>  
       <div class="mini-img-content" id="mini8">
-        <img src="Phongthu.png" class="tab-img" alt="Phongthu">
-      </div>
+        <div class="chart-container" id="chart-mini8">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=3853735&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>    
       <div class="mini-img-content" id="mini9">
-        <img src="Thep.png" class="tab-img" alt="Thep">
+        <div class="chart-container" id="chart-mini9">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1257423678&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
       </div>
       <div class="mini-img-content" id="mini10">
-        <img src="Xuatkhau.png" class="tab-img" alt="Xuatkhau">
-      </div>
+        <div class="chart-container" id="chart-mini10">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1614716694&amp;format=interactive"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>    
     </div>
     
     <div id="tab4" class="tab-content">
       <div class="tab-title">4. Bold And Fear</div>
-      <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear">
+      <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear" loading="lazy">
     </div>
     
     <div id="tab5" class="tab-content">
       <div class="tab-title">5. Aegis And Phoenix</div>
-      <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix">
+      <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix" loading="lazy">
     </div>
   </div>
 
@@ -505,13 +671,72 @@
       showNextQuote();
     }
 
+    // Xử lý tải ảnh và iframe
+    function handleMediaLoading() {
+      // Xử lý ảnh
+      const images = document.querySelectorAll('.tab-img');
+      images.forEach(img => {
+        if (img.complete) {
+          img.classList.add('loaded');
+        } else {
+          img.addEventListener('load', () => {
+            img.classList.add('loaded');
+          });
+          img.addEventListener('error', () => {
+            img.style.display = 'none';
+          });
+        }
+      });
+
+      // Xử lý iframe (giả định iframe đã tải xong sau 2s)
+      const charts = document.querySelectorAll('.chart-container');
+      charts.forEach(chart => {
+        setTimeout(() => {
+          chart.classList.add('loaded');
+        }, 2000);
+      });
+    }
+
+    // Điều chỉnh kích thước ảnh và iframe
+    function handleMediaResize() {
+      const containerWidth = document.querySelector('.tab-container').clientWidth;
+      const maxWidth = containerWidth - 40; // Trừ padding
+
+      // Điều chỉnh ảnh
+      const images = document.querySelectorAll('.tab-img');
+      images.forEach(img => {
+        img.style.maxWidth = `${maxWidth}px`;
+        if (window.innerWidth < 600) {
+          img.style.height = 'auto';
+        }
+      });
+
+      // Điều chỉnh iframe
+      const iframes = document.querySelectorAll('.chart-iframe');
+      iframes.forEach(iframe => {
+        iframe.style.width = '100%';
+        if (window.innerWidth < 600) {
+          iframe.style.height = '250px';
+        } else if (window.innerWidth < 900) {
+          iframe.style.height = '300px';
+        } else {
+          iframe.style.height = '371px';
+        }
+      });
+    }
+
     // Bắt đầu hiệu ứng khi trang tải xong
     window.addEventListener('load', function() {
       setTimeout(function() {
         document.querySelector('.loading-bar').style.display = 'none';
         displayQuotes();
+        handleMediaLoading();
+        handleMediaResize();
       }, 500);
     });
+
+    // Xử lý khi thay đổi kích thước cửa sổ
+    window.addEventListener('resize', handleMediaResize);
 
     // Main tab switching logic
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -527,6 +752,9 @@
         // Add animation to the active tab
         const activeTab = document.getElementById(btn.dataset.tab);
         activeTab.style.animation = 'fadeIn 0.6s forwards';
+
+        // Xử lý lại kích thước sau khi chuyển tab
+        setTimeout(handleMediaResize, 100);
       });
     });
 
@@ -544,6 +772,9 @@
         // Add animation to the active mini content
         const activeMini = document.getElementById(btn.dataset.mini);
         activeMini.style.animation = 'fadeIn 0.5s forwards';
+
+        // Xử lý lại kích thước sau khi chuyển mini-tab
+        setTimeout(handleMediaResize, 100);
       });
     });
 
