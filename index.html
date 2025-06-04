@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>BẢNG PHÂN TÍCH XU HƯỚNG & SỨC MẠNH NGÀNH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <style>
@@ -22,6 +22,7 @@
       --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.12);
       --market-up: #10b981;
       --market-down: #ef4444;
+      --group-separator: #cbd5e1;
     }
 
     body {
@@ -219,7 +220,7 @@
       border-radius: 3px;
     }
 
-    /* Chart container styles - Updated for responsive */
+    /* Chart container styles */
     .chart-container {
       width: 100%;
       max-width: 850px;
@@ -227,12 +228,10 @@
       display: flex;
       justify-content: center;
       border-radius: 12px;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
       border: 1px solid var(--border-color);
       transition: all 0.4s cubic-bezier(.19,1,.22,1);
-      background: white;
     }
 
     .chart-container:hover {
@@ -241,37 +240,47 @@
     }
 
     .chart-iframe {
-      width: 100%;
-      min-width: 600px;
+      width: 600px;
       height: 371px;
       border: none;
-      display: block;
     }
 
-    /* Image styles - Updated for responsive */
+    /* Regular image styles */
     .tab-img {
       width: 100%;
-      height: auto;
-      max-height: 80vh;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
+      max-width: 850px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      transition: transform 0.4s cubic-bezier(.19,1,.22,1), box-shadow 0.4s ease-in-out;
+      border: 1px solid var(--border-color);
     }
 
-    /* Mini tabs styles */
+    .tab-img:hover {
+      transform: scale(1.02) translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Mini buttons for Top 5 detail */
     .mini-tabs {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
       margin-bottom: 25px;
       margin-top: 15px;
+      position: relative;
     }
 
-    .mini-tabs-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
+    /* Phân cách giữa 2 nhóm nút */
+    .mini-tabs::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      height: 30px;
+      width: 1px;
+      background: var(--group-separator);
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .mini-btn {
@@ -312,24 +321,18 @@
       display: block;
     }
 
-    /* Zoom styles for mobile */
-    .zoomed {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(1.2);
-      z-index: 1000;
-      max-height: 90vh !important;
-      width: auto !important;
-      background: white;
-      padding: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    /* Stock chart-like elements */
+    .chart-line {
+      position: absolute;
+      height: 2px;
+      background: var(--border-color);
+      left: 0;
+      right: 0;
     }
 
-    .no-scroll {
-      overflow: hidden;
-      height: 100vh;
-    }
+    .chart-line:nth-child(1) { top: 25%; }
+    .chart-line:nth-child(2) { top: 50%; }
+    .chart-line:nth-child(3) { top: 75%; }
 
     footer {
       text-align: center;
@@ -340,7 +343,7 @@
       width: 100%;
     }
 
-    /* Responsive design - Updated */
+    /* Responsive design */
     @media (max-width: 900px) {
       .tab-container {
         padding: 25px;
@@ -363,71 +366,29 @@
         margin-bottom: 25px;
       }
       .chart-iframe {
-        min-width: 100%;
+        width: 100%;
         height: auto;
-        aspect-ratio: 16/9;
+        aspect-ratio: 600/371;
+      }
+      /* Ẩn đường phân cách trên mobile */
+      .mini-tabs::after {
+        display: none;
       }
     }
 
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-      
+    @media (max-width: 600px) {
       .tab-container {
-        padding: 15px;
+        padding: 20px;
         border-radius: 12px;
-        margin-top: 30px;
       }
-      
-      .chart-container {
-        border-radius: 8px;
-        margin: 0 -5px;
-        width: calc(100% + 10px);
-      }
-      
       .tab-title {
         font-size: 22px;
       }
-      
       .tab-btn {
         padding: 8px 16px;
         font-size: 13px;
       }
-      
       .mini-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-      }
-      
-      .mini-tabs-row {
-        gap: 6px;
-      }
-      
-      /* Mobile landscape */
-      @media (orientation: landscape) {
-        .chart-iframe, .tab-img {
-          max-height: 65vh;
-        }
-      }
-    }
-
-    @media (max-width: 480px) {
-      .tab-container {
-        padding: 12px;
-      }
-      
-      .tab-title {
-        font-size: 20px;
-        margin-bottom: 15px;
-      }
-      
-      .tabs {
-        gap: 6px;
-        margin-bottom: 20px;
-      }
-      
-      .tab-btn {
         padding: 6px 12px;
         font-size: 12px;
       }
@@ -470,8 +431,7 @@
           seamless 
           frameborder="0" 
           scrolling="no" 
-          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1465731314&amp;format=interactive"
-          loading="lazy">
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1465731314&amp;format=interactive">
         </iframe>
       </div>
     </div>
@@ -484,55 +444,148 @@
           seamless 
           frameborder="0" 
           scrolling="no" 
-          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1848622683&amp;format=interactive"
-          loading="lazy">
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1848622683&amp;format=interactive">
         </iframe>
       </div>
     </div>
     
     <div id="tab3" class="tab-content">
       <div class="tab-title">3. Top 5 cổ phiếu nổi bật theo ngành</div>
-      
-      <!-- Hàng 1: BANK, CHUNG, THEP, BDS, DTC -->
       <div class="mini-tabs">
-        <div class="mini-tabs-row">
-          <button class="mini-btn active" data-mini="mini1">Bank</button>
-          <button class="mini-btn" data-mini="mini4">Chung</button>
-          <button class="mini-btn" data-mini="mini9">Thep</button>
-          <button class="mini-btn" data-mini="mini3">Bds</button>
-          <button class="mini-btn" data-mini="mini5">Dtc</button>
-        </div>
+        <!-- Nhóm 1: BANK, CHUNG, THEP, BDS, DTC -->
+        <button class="mini-btn active" data-mini="mini1">Bank</button>
+        <button class="mini-btn" data-mini="mini4">Chung</button>
+        <button class="mini-btn" data-mini="mini9">Thep</button>
+        <button class="mini-btn" data-mini="mini3">Bds</button>
+        <button class="mini-btn" data-mini="mini5">Dtc</button>
         
-        <!-- Hàng 2: PHONGTHU, XUATKHAU, HC-PHANBON-NN, BANLE, KCN -->
-        <div class="mini-tabs-row">
-          <button class="mini-btn" data-mini="mini8">Phongthu</button>
-          <button class="mini-btn" data-mini="mini10">Xuatkhau</button>
-          <button class="mini-btn" data-mini="mini6">HC-Phanbon-NN</button>
-          <button class="mini-btn" data-mini="mini2">Banle</button>
-          <button class="mini-btn" data-mini="mini7">KCN</button>
-        </div>
+        <!-- Nhóm 2: PHONGTHU, XUATKHAU, HC-PHANBON-NN, BANLE, KCN -->
+        <button class="mini-btn" data-mini="mini8">Phongthu</button>
+        <button class="mini-btn" data-mini="mini10">Xuatkhau</button>
+        <button class="mini-btn" data-mini="mini6">HC-Phanbon-NN</button>
+        <button class="mini-btn" data-mini="mini2">Banle</button>
+        <button class="mini-btn" data-mini="mini7">KCN</button>
       </div>
-
       <div class="mini-img-content active" id="mini1">
         <div class="chart-container">
-          <iframe class="chart-iframe" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=962310192&amp;format=interactive" loading="lazy"></iframe>
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=962310192&amp;format=interactive">
+          </iframe>
         </div>
       </div>
-      <!-- Các mini-img-content khác giữ nguyên -->
+      <div class="mini-img-content" id="mini2">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1042221064&format=interactive">
+          </iframe>
+        </div>
+      </div>      
+      <div class="mini-img-content" id="mini3">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1782477941&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>      
+      <div class="mini-img-content" id="mini4">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=497562514&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>
+      <div class="mini-img-content" id="mini5">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1288762102&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>
+      <div class="mini-img-content" id="mini6">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1407771254&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>  
+      <div class="mini-img-content" id="mini7">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1406751528&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>  
+      <div class="mini-img-content" id="mini8">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=3853735&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>    
+      <div class="mini-img-content" id="mini9">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1257423678&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>
+      <div class="mini-img-content" id="mini10">
+        <div class="chart-container">
+          <iframe 
+            class="chart-iframe" 
+            seamless 
+            frameborder="0" 
+            scrolling="no" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQNulselXOImI4cz0KwCume1Voaa7KB7oHp1BCcvl3yYig1MFjp7LxDIIR7F6dJqg/pubchart?oid=1614716694&amp;format=interactive">
+          </iframe>
+        </div>
+      </div>    
     </div>
     
     <div id="tab4" class="tab-content">
       <div class="tab-title">4. Bold And Fear</div>
-      <div class="chart-container">
-        <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear" loading="lazy">
-      </div>
+      <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear">
     </div>
     
     <div id="tab5" class="tab-content">
       <div class="tab-title">5. Aegis And Phoenix</div>
-      <div class="chart-container">
-        <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix" loading="lazy">
-      </div>
+      <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix">
     </div>
   </div>
 
@@ -568,27 +621,35 @@
       let currentIndex = 0;
 
       function showNextQuote() {
+        // Tạo phần tử mới
         const quoteElement = document.createElement('div');
         quoteElement.className = 'ticker-message';
         quoteElement.textContent = quotes[currentIndex];
         ticker.appendChild(quoteElement);
 
+        // Kích hoạt hiệu ứng bay vào
         setTimeout(() => {
           quoteElement.classList.add('active');
+          
+          // Phát âm thanh đánh máy
           typewriterSound.currentTime = 0;
           typewriterSound.play();
         }, 100);
 
+        // Sau khi hiển thị, chuyển sang quote tiếp theo
         setTimeout(() => {
           quoteElement.classList.remove('active');
+          
+          // Xóa phần tử sau khi hoàn thành hiệu ứng
           setTimeout(() => {
             ticker.removeChild(quoteElement);
             currentIndex = (currentIndex + 1) % quotes.length;
             showNextQuote();
           }, 500);
-        }, 8000);
+        }, 8000); // Thời gian hiển thị mỗi quote (8 giây)
       }
 
+      // Bắt đầu chu trình
       showNextQuote();
     }
 
@@ -611,6 +672,7 @@
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab).classList.add('active');
         
+        // Add animation to the active tab
         const activeTab = document.getElementById(btn.dataset.tab);
         activeTab.style.animation = 'fadeIn 0.6s forwards';
       });
@@ -627,6 +689,7 @@
         btn.classList.add('active');
         document.getElementById(btn.dataset.mini).classList.add('active');
         
+        // Add animation to the active mini content
         const activeMini = document.getElementById(btn.dataset.mini);
         activeMini.style.animation = 'fadeIn 0.5s forwards';
       });
@@ -650,66 +713,22 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // Market status with accurate hours (9:00-15:00, Monday-Friday)
+    // Simulate market status changes
     function updateMarketStatus() {
       const statusElement = document.getElementById('market-status');
-      const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      const currentDay = now.getDay();
+      const isOpen = Math.random() > 0.5;
       
-      // Check if weekend (Saturday or Sunday)
-      if (currentDay === 0 || currentDay === 6) {
-        statusElement.textContent = 'Thị trường đóng cửa (Cuối tuần)';
-        statusElement.className = 'stock-down';
-        return;
-      }
-      
-      const currentTime = currentHour * 60 + currentMinute;
-      const openTime = 9 * 60;
-      const closeTime = 15 * 60;
-      
-      if (currentTime >= openTime && currentTime < closeTime) {
-        const remainingMinutes = closeTime - currentTime;
-        const hoursLeft = Math.floor(remainingMinutes / 60);
-        const minsLeft = remainingMinutes % 60;
-        
-        statusElement.textContent = `Thị trường đang mở cửa (Đóng cửa lúc 15:00 - còn ${hoursLeft}h${minsLeft}p)`;
+      if (isOpen) {
+        statusElement.textContent = 'Thị trường đang mở cửa';
         statusElement.className = 'stock-up';
       } else {
-        let nextOpenTime;
-        if (currentTime < openTime) {
-          const remainingMinutes = openTime - currentTime;
-          const hoursLeft = Math.floor(remainingMinutes / 60);
-          const minsLeft = remainingMinutes % 60;
-          nextOpenTime = `Mở cửa lúc 9:00 (còn ${hoursLeft}h${minsLeft}p)`;
-        } else {
-          let daysToAdd = 1;
-          if (currentDay === 5) daysToAdd = 3;
-          
-          const nextDate = new Date(now);
-          nextDate.setDate(now.getDate() + daysToAdd);
-          const options = { weekday: 'long', day: 'numeric', month: 'numeric' };
-          nextOpenTime = `Mở cửa lại vào ${nextDate.toLocaleDateString('vi-VN', options)} lúc 9:00`;
-        }
-        
-        statusElement.textContent = `Thị trường đã đóng cửa (${nextOpenTime})`;
+        statusElement.textContent = 'Thị trường đã đóng cửa';
         statusElement.className = 'stock-down';
       }
     }
     
-    setInterval(updateMarketStatus, 60000);
+    setInterval(updateMarketStatus, 5000);
     updateMarketStatus();
-
-    // Zoom functionality for mobile
-    document.querySelectorAll('.chart-container img, .chart-container iframe').forEach(item => {
-      item.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          this.classList.toggle('zoomed');
-          document.body.classList.toggle('no-scroll');
-        }
-      });
-    });
   </script>
 </body>
 </html>
