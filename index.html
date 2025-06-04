@@ -225,8 +225,6 @@
       width: 100%;
       max-width: 850px;
       margin: 0 auto;
-      display: flex;
-      justify-content: center;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
@@ -240,9 +238,10 @@
     }
 
     .chart-iframe {
-      width: 600px;
-      height: 371px;
+      width: 100%;
+      height: 500px;
       border: none;
+      display: block;
     }
 
     /* Regular image styles */
@@ -366,9 +365,7 @@
         margin-bottom: 25px;
       }
       .chart-iframe {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 600/371;
+        height: 400px;
       }
       /* Ẩn đường phân cách trên mobile */
       .mini-tabs::after {
@@ -391,6 +388,9 @@
       .mini-btn {
         padding: 6px 12px;
         font-size: 12px;
+      }
+      .chart-iframe {
+        height: 300px;
       }
     }
   </style>
@@ -580,12 +580,16 @@
     
     <div id="tab4" class="tab-content">
       <div class="tab-title">4. Bold And Fear</div>
-      <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear">
+      <div class="chart-container">
+        <img src="Boldandfear.png" class="tab-img" alt="Bold And Fear">
+      </div>
     </div>
     
     <div id="tab5" class="tab-content">
       <div class="tab-title">5. Aegis And Phoenix</div>
-      <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix">
+      <div class="chart-container">
+        <img src="AegisAndPhoenix.png" class="tab-img" alt="AegisAndPhoenix">
+      </div>
     </div>
   </div>
 
