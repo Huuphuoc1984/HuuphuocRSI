@@ -752,40 +752,54 @@
       });
     });
 
-    // Update current time
-    function updateTime() {
-      const now = new Date();
-      const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      };
-      document.getElementById('current-time').textContent = now.toLocaleDateString('vi-VN', options);
-    }
+    // Cập nhật thời gian thực
+  function updateTime() {
+    const now = new Date();
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+    document.getElementById('current-time').textContent = now.toLocaleDateString('vi-VN', options);
+  }
+  
+  // Cập nhật trạng thái thị trường (phiên bản mới)
+  function updateMarketStatus() {
+    const statusElement = document.getElementById('market-status');
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentDay = now.getDay();
     
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    // Simulate market status changes
-    function updateMarketStatus() {
-      const statusElement = document.getElementById('market-status');
-      const isOpen = Math.random() > 0.5;
-      
-      if (isOpen) {
-        statusElement.textContent = 'Thị trường đang mở cửa';
-        statusElement.className = 'stock-up';
+    const isWeekday = currentDay >= 1 && currentDay <= 5;
+    const isMarketOpen = isWeekday && 
+                        ((currentHour > 9 || (currentHour === 9 && currentMinute >= 0)) && 
+                        (currentHour < 15 || (currentHour === 15 && currentMinute === 0)));
+    
+    if (isMarketOpen) {
+      statusElement.textContent = 'Thị trường đang mở cửa (9h00-15h00)';
+      statusElement.className = 'stock-up';
+    } else {
+      if (!isWeekday) {
+        statusElement.textContent = 'Hôm nay là ngày nghỉ (Thứ 7/Chủ nhật)';
+      } else if (currentHour < 9 || (currentHour === 9 && currentMinute < 0)) {
+        statusElement.textContent = 'Thị trường chưa mở cửa (Mở lúc 9h00)';
       } else {
-        statusElement.textContent = 'Thị trường đã đóng cửa';
-        statusElement.className = 'stock-down';
+        statusElement.textContent = 'Thị trường đã đóng cửa (Mở lại lúc 9h00)';
       }
+      statusElement.className = 'stock-down';
     }
-    
-    setInterval(updateMarketStatus, 5000);
-    updateMarketStatus();
+  }
+
+  // Khởi chạy các hàm cập nhật
+  setInterval(updateTime, 1000);
+  setInterval(updateMarketStatus, 60000);
+  updateTime();
+  updateMarketStatus();
   </script>
 </body>
 </html>
